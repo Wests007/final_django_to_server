@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load thumbnail %}
+<html lang="ru">
+  <head>
+    {% block title %}
+     Пост {{ post.text|truncatechars:10 }}
+    {% endblock %}
+  </head>
+  <body>
+    <main>
+    {% block content %}
+      <div class="row">
+        <aside class="col-12 col-md-3">
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item">
+              Дата публикации: {{ post.pub_date|date:"d E Y" }}.
+            </li>
+            {% if post.group %}
+            <li class="list-group-item">
+              Группа: {{ post.group.title }}.
+              <a href="{% url 'posts:group_list' post.group.slug %}"> Все записи группы</a>
+            </li>
+            {% endif %}
+            <li class="list-group-item">
+              {% if post.author.get_full_name %}
+              Автор: {{ post.author.get_full_name }}.
+              {% else %}
+              Автор: {{ post.author.username }}.
+              {% endif %}
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+              Всего постов автора:  <span >{{ post.author.posts.count }}</span>
+            </li>
+            <li class="list-group-item">
+              <a href="{% url 'posts:profile' post.author.username %}">Все посты пользователя</a>
+            </li>
+            <li class="list-group-item">
+              {% if post.author.username == user.username %}
+              <div class="d-flex justify-content-start">
+                <a class="btn btn-success" href="{% url 'posts:post_edit' post.id %}" role="button">Редактировать пост</a>
+              </div>
+              {% endif %}
+            </li>
+          </ul>
+        </aside>
+        <article class="col-12 col-md-9">
+          <br>
+          <div class="d-flex justify-content-center">
+          {% thumbnail post.image "800x300" as im %}
+            <img src="{{ im.url }}">
+          {% endthumbnail %}
+          </div>
+            <p>{{ post.text|linebreaksbr }}</p>
+            {% include 'posts/includes/add_comment.html' %}
+        </article>
+      </div>
+    {% endblock %}
+    </main>
+  </body>
+</html>

@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load thumbnail %}
+<html lang="ru">
+  <head>
+    {% block title %}
+      Профайл пользователя {{ author.get_full_name }}
+    {% endblock %}
+  </head>
+  <body>
+    <main>
+    {% block content %}
+      <div class="container py-5">
+        <div class="mb-5">
+          {% if author.get_full_name %}
+          <h1>Все посты пользователя: {{ author.get_full_name }}.</h1>
+          {% else %}
+          <h1>Все посты пользователя: {{ author.username }}.</h1>
+          {% endif %}
+          <h3>Всего постов: {{ author.posts.count }}. </h3>
+          {% if user.is_authenticated %}
+          {% if following %}
+            <a
+              class="btn btn-lg btn-light"
+              href="{% url 'posts:profile_unfollow' author.username %}" role="button"
+            >
+              Отписаться
+            </a>
+          {% else %}
+              <a
+                class="btn btn-lg btn-primary"
+                href="{% url 'posts:profile_follow' author.username %}" role="button"
+              >
+                Подписаться
+              </a>
+          {% endif %}
+          {% endif %}
+        </div>
+        {% for post in page_obj %}
+        <article>
+          <ul>
+            <li>
+              {% if post.author.get_full_name %}
+              Автор: {{ post.author.get_full_name }}.
+              {% else %}
+              Автор: {{ post.author.username }}.
+              {% endif %}
+              <a href="{% url 'posts:profile' post.author.username %}"> Все посты пользователя</a>
+            </li>
+            <li>
+              Дата публикации: {{ post.pub_date|date:"d E Y" }}.
+            </li>
+            {% if post.group %}
+            <li>
+              Группа: {{ post.group }}.
+              <a href="{% url 'posts:group_list' post.group.slug %}"> Посмотреть все записи группы</a>
+            </li>
+            {% endif %}
+          </ul>
+          <div class="d-flex justify-content-center">
+          {% thumbnail post.image "800x300" as im %}
+            <img src="{{ im.url }}">
+          {% endthumbnail %}
+          </div>
+          <p>
+            {{ post.text|linebreaksbr }}
+            {% if post.author.username == user.username %}
+            <div class="d-flex justify-content-start">
+              <a class="btn btn-success" href="{% url 'posts:post_edit' post.id %}" role="button">Редактировать пост</a>
+            </div>
+            {% endif %}
+          </p>
+          <div class="d-flex justify-content-center">
+            {% if user.is_authenticated %}
+            <a class="btn btn-primary" href="{% url 'posts:add_comment' post.id %}" role="button">Комментировать пост</a>
+            {% else %}
+            <a href="{% url 'posts:post_detail' post.id %}"> Подробная информация поста</a>
+            {% endif %}
+          </div>
+        </article>
+        {% if not forloop.last %}<hr>{% endif %}
+        {% endfor %}
+        {% include 'posts/includes/paginator.html' %}
+      </div>
+    {% endblock %}
+    </main>
+  </body>
+</html>
