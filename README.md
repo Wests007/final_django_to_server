@@ -8,7 +8,7 @@ Python 3
 Django 2.2
 
 ### Проект доступен в сети по адресу:
-[https://traveltube.sytes.net/](https://traveltube.sytes.net/)
+[https://traveltube.sytes.net/](https://wests007.pythonanywhere.com/)
 
 ### Как запустить проект:
 Клонировать репозиторий и перейти в него в командной строке:
