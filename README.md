@@ -4,8 +4,8 @@
 Социальная сеть блогеров о путешествиях.
 
 ## Технологии
-Python 3.7
-Django 2.2.19
+Python 3
+Django 2.2
 
 ### Проект доступен в сети по адресу:
 [https://traveltube.sytes.net/](https://traveltube.sytes.net/)
@@ -13,10 +13,10 @@ Django 2.2.19
 ### Как запустить проект:
 Клонировать репозиторий и перейти в него в командной строке:
 ```
-git clone https://github.com/Wests007/api_yamdb.git
+git clone https://github.com/Wests007/final_django_to_server.git
 ```
 ```
-cd api_yamdb
+cd final_django_to_server
 ```
 Cоздать и активировать виртуальное окружение:
 ```
@@ -32,9 +32,9 @@ python -m pip install --upgrade pip
 ```
 pip install -r requirements.txt
 ```
-Выполнить миграции:
+Перейти в папку с файлом manage.py и выполнить миграции:
 ```
-cd api_yamdb
+cd yatube
 ```
 ```
 python manage.py migrate
